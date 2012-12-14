@@ -88,6 +88,8 @@ public class BrowserSim {
 	private ControlHandler controlHandler;
 	private Image[] icons;
 	private ResizableSkinSizeAdvisor sizeAdvisor;
+	
+	private ProgressListener progressListener;
 
 	public static void main(String[] args) {
 		//CocoaUIEnhancer handles connection between the About, Preferences and Quit menus in MAC OS X
@@ -207,7 +209,7 @@ public class BrowserSim {
 		skin.setContextMenu(contextMenu);
 		createMenuItemsForContextMenu(contextMenu);
 		
-		browser.addProgressListener(new ProgressListener() {
+		progressListener = new ProgressListener() {
 			public void changed(ProgressEvent event) {
 				int ratio;
 				if (event.current == event.total || event.total == 0) {
@@ -220,7 +222,9 @@ public class BrowserSim {
 			public void completed(ProgressEvent event) {
 				skin.progressChanged(-1);
 			}
-		});
+		}; 
+		browser.addProgressListener(progressListener);
+		
 		browser.addStatusTextListener(new StatusTextListener() {
 			public void changed(StatusTextEvent event) {
 				skin.statusTextChanged(event.text);
@@ -600,6 +604,7 @@ public class BrowserSim {
 		String oldSkinUrl = null;
 		if (newSkinClass != skin.getClass()) {
 			oldSkinUrl = skin.getBrowser().getUrl();
+			skin.getBrowser().removeProgressListener(progressListener);
 			skin.getBrowser().getShell().dispose();//XXX
 			initSkin(newSkinClass);
 		}
