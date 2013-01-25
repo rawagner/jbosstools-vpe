@@ -14,6 +14,7 @@ function main() {
     context.fillText("Drop an image here", 240, 200);
     context.fillText("The visible area of the image must touch the top image border", 240, 240);
     context.fillText("(i.e. the first row of the image must have at least 1 filled pixel).", 240, 255);
+	context.fillText("WORKS IN GOOGLE CHROME ONLY!", 240, 275);
 
     canvas.addEventListener("drop", function (evt) {
         var files = evt.dataTransfer.files;
