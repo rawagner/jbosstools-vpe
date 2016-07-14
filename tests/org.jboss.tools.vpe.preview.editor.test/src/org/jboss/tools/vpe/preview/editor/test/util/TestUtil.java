@@ -17,6 +17,8 @@ import java.io.IOException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jface.action.ActionContributionItem;
+import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextViewer;
@@ -28,6 +30,7 @@ import org.jboss.tools.test.util.JobUtils;
 import org.jboss.tools.test.util.xpl.DisplayDelayHelper;
 import org.jboss.tools.test.util.xpl.DisplayHelper;
 import org.jboss.tools.vpe.base.test.ProjectsLoader;
+import org.jboss.tools.vpe.preview.editor.VpvEditor;
 import org.jboss.tools.vpe.preview.editor.VpvEditorController;
 import org.jboss.tools.vpe.preview.editor.VpvEditorPart;
 import org.w3c.dom.Node;
@@ -213,6 +216,16 @@ public class TestUtil {
 		IDocument document = editor.getDocumentProvider().getDocument(editor.getEditorInput());
 		assertNotNull(document);
 		document.replace(end, start, text);
+	}
+	
+	public static ActionContributionItem getAction(VpvEditor visualEditor, String action) {
+		for (IContributionItem ic : visualEditor.getToolBarManager().getItems()) {
+			if (ic instanceof ActionContributionItem
+					&& ((ActionContributionItem) ic).getAction().getText().equals(action)) {
+				return (ActionContributionItem) ic;
+			}
+		}
+		return null;
 	}
 }
 

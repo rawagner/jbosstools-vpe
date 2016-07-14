@@ -24,7 +24,6 @@ import java.io.IOException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.ActionContributionItem;
-import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.LocationAdapter;
@@ -41,7 +40,6 @@ import org.jboss.tools.vpe.preview.editor.VpvEditor;
 import org.jboss.tools.vpe.preview.editor.VpvEditorController;
 import org.jboss.tools.vpe.preview.editor.test.util.ActionIsEnabledCondition;
 import org.jboss.tools.vpe.preview.editor.test.util.TestUtil;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 @SuppressWarnings("restriction")
@@ -52,16 +50,7 @@ public class VpvToolBarTest extends RefreshTest {
 
 	private JSPMultiPageEditor editor;
 	private VpvEditor visualEditor;
-	private static IPreferenceStore preferences;
-	private static int defaultOrientation;
-	
-	@BeforeClass
-	public static void getDefaultEditorOrientation(){
-		preferences = WebUiPlugin.getDefault().getPreferenceStore();
-		defaultOrientation = Integer.parseInt(preferences.getDefaultString(
-				IVpePreferencesPage.VISUAL_SOURCE_EDITORS_SPLITTING));
-		
-	}
+	private static IPreferenceStore preferences = WebUiPlugin.getDefault().getPreferenceStore();
 
 	private void openTestPage() throws CoreException, IOException {
 		try {
@@ -82,21 +71,21 @@ public class VpvToolBarTest extends RefreshTest {
 	@Test
 	public void testPreferencesAction() throws Exception{
 		openTestPage();
-		ActionContributionItem action = getAction(VpeUIMessages.PREFERENCES);
+		ActionContributionItem action = TestUtil.getAction(visualEditor,VpeUIMessages.PREFERENCES);
 		checkBasicAction(action);
 	}
 	
 	@Test
 	public void testPageDesignAction() throws Exception{
 		openTestPage();
-		ActionContributionItem action = getAction(VpeUIMessages.PAGE_DESIGN_OPTIONS);
+		ActionContributionItem action = TestUtil.getAction(visualEditor,VpeUIMessages.PAGE_DESIGN_OPTIONS);
 		checkBasicAction(action);
 	}
 	
 	@Test
 	public void testEditorSplittingAction() throws Exception{
 		openTestPage();
-		ActionContributionItem action = getAction(VpeUIMessages.VISUAL_SOURCE_EDITORS_SPLITTING);
+		ActionContributionItem action = TestUtil.getAction(visualEditor,VpeUIMessages.VISUAL_SOURCE_EDITORS_SPLITTING);
 		checkBasicAction(action);
 		assertEquals(VpeUIMessages.SPLITTING_VERT_TOP_SOURCE_TOOLTIP, action.getAction().getToolTipText());
 		assertEquals(SWT.VERTICAL, getCurrentEditorOrientantion());
@@ -124,31 +113,12 @@ public class VpvToolBarTest extends RefreshTest {
 		assertEquals(VpeUIMessages.SPLITTING_VERT_TOP_SOURCE_TOOLTIP, action.getAction().getToolTipText());
 		assertEquals(1, preferences.getInt(IVpePreferencesPage.VISUAL_SOURCE_EDITORS_SPLITTING));
 		assertEquals(SWT.VERTICAL, getCurrentEditorOrientantion());
-	}
-	
-	@Test
-	public void testEditorSplittingPreferences() throws Exception {
-		try{
-			for(int i=1; i<=4; i++){
-				preferences.setValue(IVpePreferencesPage.VISUAL_SOURCE_EDITORS_SPLITTING, new Integer(i).toString());
-				openTestPage();
-				if(i<3){
-					assertEquals(SWT.VERTICAL, getCurrentEditorOrientantion()); 
-				} else {
-					assertEquals(SWT.HORIZONTAL, getCurrentEditorOrientantion()); 
-				}
-				closeEditors();
-			}
-		} finally {
-			preferences.setValue(IVpePreferencesPage.VISUAL_SOURCE_EDITORS_SPLITTING, 
-					new Integer(defaultOrientation).toString());
-		}
 	}	
 	
 	@Test
 	public void testShowSelectionBarAction() throws Exception{
 		openTestPage();
-		ActionContributionItem action = getAction(VpeUIMessages.SHOW_SELECTION_BAR);
+		ActionContributionItem action = TestUtil.getAction(visualEditor,VpeUIMessages.SHOW_SELECTION_BAR);
 		checkBasicAction(action);
 		assertTrue(action.getAction().isChecked());
 		assertTrue(preferences.getBoolean(IVpePreferencesPage.SHOW_SELECTION_TAG_BAR));
@@ -181,7 +151,7 @@ public class VpvToolBarTest extends RefreshTest {
 		};
 		visualEditor.getBrowser().addLocationListener(locationListener);
 		
-		ActionContributionItem action = getAction(Messages.VpvView_REFRESH);
+		ActionContributionItem action = TestUtil.getAction(visualEditor,Messages.VpvView_REFRESH);
 		checkBasicAction(action);
 		assertEquals(Messages.VpvView_REFRESH, action.getAction().getToolTipText());
 		preferences.setValue(REFRESH_ON_SAVE_PREFERENCES, false);
@@ -200,11 +170,11 @@ public class VpvToolBarTest extends RefreshTest {
 		openTestPage();
 		visualEditor.getBrowser().addLocationListener(browserListener);
 		
-		ActionContributionItem backAction = getAction(Messages.VpvView_BACK);
+		ActionContributionItem backAction = TestUtil.getAction(visualEditor,Messages.VpvView_BACK);
 		waitForAction(backAction, false);
 		assertFalse(backAction.isEnabled());
 		assertEquals(Messages.VpvView_BACK, backAction.getAction().getToolTipText());
-		ActionContributionItem forwardAction = getAction(Messages.VpvView_FORWARD);
+		ActionContributionItem forwardAction = TestUtil.getAction(visualEditor,Messages.VpvView_FORWARD);
 		assertFalse(forwardAction.isEnabled());
 		assertEquals(Messages.VpvView_FORWARD, forwardAction.getAction().getToolTipText());
 		
@@ -231,7 +201,7 @@ public class VpvToolBarTest extends RefreshTest {
 	@Test
 	public void testOpenInDefaultBrowserAction() throws Exception{
 		openTestPage();
-		ActionContributionItem action = getAction(Messages.VpvView_OPEN_IN_DEFAULT_BROWSER);
+		ActionContributionItem action = TestUtil.getAction(visualEditor,Messages.VpvView_OPEN_IN_DEFAULT_BROWSER);
 		checkBasicAction(action);
 		assertEquals(Messages.VpvView_OPEN_IN_DEFAULT_BROWSER, action.getAction().getToolTipText());
 	}
@@ -245,16 +215,6 @@ public class VpvToolBarTest extends RefreshTest {
 	
 	private int getCurrentEditorOrientantion(){
 		return visualEditor.getController().getPageContext().getEditPart().getContainer().getOrientation();
-	}
-
-	private ActionContributionItem getAction(String action) {
-		for (IContributionItem ic : visualEditor.getToolBarManager().getItems()) {
-			if (ic instanceof ActionContributionItem
-					&& ((ActionContributionItem) ic).getAction().getText().equals(action)) {
-				return (ActionContributionItem) ic;
-			}
-		}
-		return null;
 	}
 	
 	private void waitForAction(ActionContributionItem action, boolean enabled){

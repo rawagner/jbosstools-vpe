@@ -76,6 +76,7 @@ import org.jboss.tools.vpe.preview.core.util.ActionBar;
 import org.jboss.tools.vpe.preview.core.util.EditorUtil;
 import org.jboss.tools.vpe.preview.core.util.NavigationUtil;
 import org.jboss.tools.vpe.preview.core.util.SuitableFileExtensions;
+import org.jboss.tools.vpe.preview.editor.context.VpvPageContext;
 import org.w3c.dom.Node;
 
 /**
@@ -303,7 +304,12 @@ public class VpvEditor extends DocumentListeningEditorPart implements VpvVisualM
 				/*
 				 * Update Selection Bar 
 				 */
-				((VpvEditorPart)controller.getPageContext().getEditPart()).updateSelectionBar(this.isChecked());
+				if(controller != null){
+					VpvPageContext vpvPageContext = controller.getPageContext();
+					if(vpvPageContext != null && vpvPageContext.getEditPart() != null){
+						vpvPageContext.getEditPart().updateSelectionBar(this.isChecked());
+					}
+				}
 				WebUiPlugin.getDefault().getPreferenceStore().
 					setValue(IVpePreferencesPage.SHOW_SELECTION_TAG_BAR, this.isChecked());
 			}
@@ -498,6 +504,7 @@ public class VpvEditor extends DocumentListeningEditorPart implements VpvVisualM
 		
 		if (showSelectionBarAction != null) {
 			showSelectionBarAction.setChecked(prefsShowSelectionBar);
+			showSelectionBarAction.run();
 		}
 		if (rotateEditorsAction != null) {
 			currentOrientationIndex = prefsOrientationIndex;
