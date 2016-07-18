@@ -16,5 +16,6 @@
 	<properties>
 		<coverage.filter>org.jboss.tools.vpe.preview.editor*</coverage.filter>
 		<emma.instrument.bundles>org.jboss.tools.vpe.preview.editor</emma.instrument.bundles>
+		<enable.gtk3>1</enable.gtk3>
 	</properties>
 </project>

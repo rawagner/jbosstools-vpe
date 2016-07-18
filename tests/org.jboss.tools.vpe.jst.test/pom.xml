@@ -14,6 +14,7 @@
 	<properties>
 		<coverage.filter>org.jboss.tools.jst.angularjs*</coverage.filter>
 		<emma.instrument.bundles>org.jboss.tools.jst.angularjs</emma.instrument.bundles>
+		<enable.gtk3>1</enable.gtk3>
 	</properties>
 
 </project>
