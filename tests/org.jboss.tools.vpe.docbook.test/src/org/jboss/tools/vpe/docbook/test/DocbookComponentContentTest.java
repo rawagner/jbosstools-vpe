@@ -10,6 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.docbook.test;
 
+import org.eclipse.swt.widgets.Display;
+import org.jboss.tools.test.util.JobUtils;
+import org.jboss.tools.test.util.xpl.DisplayHelper;
 import org.jboss.tools.vpe.base.test.ComponentContentTest;
 import org.junit.Test;
 
@@ -35,6 +38,8 @@ public class DocbookComponentContentTest extends ComponentContentTest {
 	@Test
 	public void testXref() throws Throwable {
 		performContentTest("components/xref/xref.xml"); //$NON-NLS-1$
+		new RefreshDelayHelper().waitForCondition(Display.getDefault(), 500*1000L);
+		JobUtils.waitForIdle(50L, 500*1000L);
 	}
 
 	@Test
@@ -80,5 +85,18 @@ public class DocbookComponentContentTest extends ComponentContentTest {
 	@Override
 	protected String getEditorID() {
 		return DOC_BOOK_EDITOR_ID;
+	}
+	
+	class RefreshDelayHelper extends DisplayHelper {
+		private boolean locationChanged;
+		
+		@Override
+		protected boolean condition() {
+			return locationChanged;
+		}
+
+		public void setLocationChanged(boolean locationChanged) {
+			this.locationChanged = locationChanged;
+		}
 	}
 }
