@@ -489,7 +489,7 @@ public class VpeTest implements ILogListener {
 	}
 	
 	private static final String PROPERTY_DEFAULTTYPE = "org.eclipse.swt.browser.DefaultType"; //$NON-NLS-1$
-	private static final String SWT_GTK3 = "SWT_GTK3"; //$NON-NLS-1$
+	private static final String SWT_GTK3 = "org.eclipse.swt.internal.gtk.version"; //$NON-NLS-1$
 	static final String XULRUNNER_PATH = "org.eclipse.swt.browser.XULRunnerPath"; //$NON-NLS-1$
 	public static final String LOAD_DEFAULT_ENGINE = "org.jboss.tools.vpe.engine.default"; //$NON-NLS-1$
 	
@@ -517,9 +517,9 @@ public class VpeTest implements ILogListener {
 
 	private static boolean isGTK3Env() {
 		String gtk3 = System.getProperty(SWT_GTK3);
-		if (gtk3 == null) {
-			gtk3 = System.getenv(SWT_GTK3);
+		if(gtk3 == null){
+			return false;
 		}
-		return !"0".equals(gtk3); //$NON-NLS-1$
+		return gtk3.startsWith("3"); //$NON-NLS-1$
 	}
 }
