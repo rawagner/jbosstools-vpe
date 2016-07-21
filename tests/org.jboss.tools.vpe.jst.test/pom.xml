@@ -14,7 +14,21 @@
 	<properties>
 		<coverage.filter>org.jboss.tools.jst.angularjs*</coverage.filter>
 		<emma.instrument.bundles>org.jboss.tools.jst.angularjs</emma.instrument.bundles>
-		<enable.gtk3>1</enable.gtk3>
 	</properties>
-
+	
+	<!--
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<configuration>
+					<environmentVariables>
+              			<SWT_GTK3> </SWT_GTK3>
+            		</environmentVariables>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+-->
 </project>

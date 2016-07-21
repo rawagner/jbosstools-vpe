@@ -17,4 +17,18 @@
 		<coverage.filter>org.jboss.tools.vpe.html*</coverage.filter>
 		<emma.instrument.bundles>org.jboss.tools.vpe.html</emma.instrument.bundles>
 	</properties>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<configuration>
+					<environmentVariables>
+              			<SWT_GTK3>0</SWT_GTK3>
+            		</environmentVariables>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
