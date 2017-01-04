@@ -27,8 +27,8 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.browser.Browser;
-import org.eclipse.swt.browser.LocationAdapter;
-import org.eclipse.swt.browser.LocationEvent;
+import org.eclipse.swt.browser.TitleEvent;
+import org.eclipse.swt.browser.TitleListener;
 import org.eclipse.swt.program.Program;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.ICommandService;
@@ -109,10 +109,10 @@ public abstract class ActionBar {
 		enableRefreshOnSaveAction.run();
 		
 		if (browser != null && !browser.isDisposed()) {
-			browser.addLocationListener(new LocationAdapter() {
+			browser.addTitleListener(new TitleListener() {
+				
 				@Override
-				public void changed(LocationEvent event) {
-					Browser browser = (Browser)event.widget;
+				public void changed(TitleEvent event) {
 					goBackAction.setEnabled(browser.isBackEnabled());
 					goForwardAction.setEnabled(browser.isForwardEnabled());
 				}
