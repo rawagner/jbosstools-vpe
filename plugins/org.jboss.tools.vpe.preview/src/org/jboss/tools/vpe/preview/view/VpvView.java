@@ -32,6 +32,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.LocationAdapter;
 import org.eclipse.swt.browser.LocationEvent;
+import org.eclipse.swt.browser.TitleEvent;
+import org.eclipse.swt.browser.TitleListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -120,10 +122,6 @@ public class VpvView extends ViewPart implements VpvVisualModelHolder {
 			browser.addLocationListener(new LocationAdapter() {
 				@Override
 				public void changed(LocationEvent event) {
-					NavigationUtil.disableJsPopUps(browser);
-					NavigationUtil.disableLinks(browser);
-					NavigationUtil.disableInputs(browser);
-
 					ISelection currentSelection = getCurrentSelection();
 					NavigationUtil.updateSelectionAndScrollToIt(currentSelection, browser, visualModel);
 				}
@@ -135,6 +133,17 @@ public class VpvView extends ViewPart implements VpvVisualModelHolder {
 					NavigationUtil.navigateToVisual(currentEditor, browser, visualModel, event.x, event.y);
 				}
 
+			});
+			
+			browser.addTitleListener(new TitleListener() {
+				
+				@Override
+				public void changed(TitleEvent event) {
+					NavigationUtil.disableJsPopUps(browser);
+					NavigationUtil.disableLinks(browser);
+					NavigationUtil.disableInputs(browser);
+					
+				}
 			});
 	
 			inizializeSelectionListener();
