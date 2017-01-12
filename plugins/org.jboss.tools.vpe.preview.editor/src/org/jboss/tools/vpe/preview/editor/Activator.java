@@ -54,6 +54,7 @@ public class Activator extends AbstractUIPlugin {
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
+		System.out.println("vpe.preview.editor activaotor");
 		super.start(context);
 		plugin = this;
 		
@@ -62,6 +63,7 @@ public class Activator extends AbstractUIPlugin {
 		visualModelHolderRegistry = new VpvVisualModelHolderRegistry();
 		VpvController vpvController = new VpvController(domBuilder, visualModelHolderRegistry);
 		server = new VpvServer(vpvController);
+		System.out.println("vpe.preview.editor activaotor - done");
 	}
 
 	/*
@@ -69,6 +71,7 @@ public class Activator extends AbstractUIPlugin {
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
+		System.out.println("vpe.preview.editor activaotor stop");
 		server.stop();
 		server = null;
 		visualModelHolderRegistry = null;
@@ -76,6 +79,7 @@ public class Activator extends AbstractUIPlugin {
 		
 		plugin = null;
 		super.stop(context);
+		System.out.println("vpe.preview.editor activaotor stop done");
 	}
 	
 	/**

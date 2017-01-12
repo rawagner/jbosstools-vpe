@@ -26,6 +26,7 @@ public class VpeJstAllTests {
 
 	public static Test suite() {
 		// set this property to make VPE always opened as visual part
+		System.out.println("suute");
 		System.setProperty(VpePlatformUtil.LOAD_DEFAULT_ENGINE, String.valueOf(true));
 		WebUiPlugin.getDefault().getPreferenceStore().setValue(IVpePreferencesPage.USE_VISUAL_EDITOR_FOR_HTML5, Boolean.TRUE.toString());
 		

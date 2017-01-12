@@ -52,11 +52,13 @@ public class VpePlugin extends BaseUIPlugin {
 	 * This method is called upon plug-in activation
 	 */
 	public void start(BundleContext context) throws Exception {
+		System.out.println("vpe activaotor");
 		super.start(context);
 //		moved to vpe.xulrunner plug-in
 //		earlyStartup();
 		editorEventType = new UsageEventType(this, EDITOR_EVENT_ACTION, Messages.UsageEventTypeEditorLabelDescription, UsageEventType.HOW_MANY_TIMES_VALUE_DESCRIPTION);
 		UsageReporter.getInstance().registerEvent(editorEventType);
+		System.out.println("vpe activaotor stop");
 	}
 
 	public void countSourceTabEvent() {
